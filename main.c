@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
 
   boundaries[0][0] = 0.0215;  //omega b
   boundaries[0][1] = 0.0235;
-  boundaries[0][2] = 0.005;
+  boundaries[0][2] = 0.0005;
 
   boundaries[1][0] = 0.120; //omega m
   boundaries[1][1] = 0.155;
@@ -61,22 +61,15 @@ int main(int argc, char **argv) {
         xstar[j]+=boundaries[j][0];
     }
     for(index = boundaries[i][0]+boundaries[i][2]; index < boundaries[i][1]; index+=boundaries[i][2]){
-      xstar[i] = index;
-      printf("%f, %f, %f, %f, %f, %f, %f, %f, index=%f\n",
-      xstar[0],xstar[1],xstar[2],xstar[3],xstar[4],xstar[5],xstar[6],index);
-      sprintf(filename,"files/data_00_%u_%f.dat",i,index);
-      mainLoop(0, xstar, filename,0);
-      sprintf(filename,"files/data_01_%u_%f.dat",i,index);
-      mainLoop(0, xstar, filename,1);
-      sprintf(filename,"files/data_02_%u_%f.dat",i,index);
-      mainLoop(0, xstar, filename,2);
-      sprintf(filename,"files/data_10_%u_%f.dat",i,index);
-      xstar[3]=0;
-      mainLoop(1, xstar, filename,0);
-      sprintf(filename,"files/data_11_%u_%f.dat",i,index);
-      mainLoop(1, xstar, filename,1);
-      sprintf(filename,"files/data_12_%u_%f.dat",i,index);
-      mainLoop(1, xstar, filename,2);
+      for(int k=0;k<3;k++){
+        xstar[i] = index;
+        printf("%f, %f, %f, %f, %f, %f, %f, %f, index=%f\n",
+        xstar[0],xstar[1],xstar[2],xstar[3],xstar[4],xstar[5],xstar[6],index);
+        sprintf(filename,"files/%u/%u/0/data_%f.dat",i,k,index);
+        mainLoop(0, xstar, filename,k);
+        sprintf(filename,"files/%u/%u/1/data_%f.dat",i,k,index);
+        mainLoop(1, xstar, filename,k);
+      }
     }
   }
     return 0;
